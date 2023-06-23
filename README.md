@@ -1,3 +1,10 @@
-# p5-ts-starter '2023
+# Classic Snake
+## But it doesnt look great
+### And its way harder
 
-A starter for instance-mode p5.js with TypeScript, and Parcel 2 bundler.
+- arrow keys to move
+- reload page to restart game if you lose
+- it gets progressively harder the more you play
+
+## Changing the game settings
+to change the game settings change the values at the start of the sketch function declaration

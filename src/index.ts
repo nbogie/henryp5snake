@@ -17,7 +17,7 @@ function createSketch(p: p5): void {
     let fps = 2; //initial game speed
     let difficult_increment:number = 1; //how much hard the game gets each time the snake eats food
     let number_of_cells_on_board:number = 20; //the number of squares on each axis of the board
-    //Crucially, assign the setup and draw functions for the p5 createSketch.
+    
     p.setup = setup;
     p.draw = draw;
 
