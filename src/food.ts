@@ -1,32 +1,26 @@
 import p5 from "p5";
 import Board from "./board"
+import Cell from "./cell"
 
 class Food{
-    _position: p5.Vector;
+    _position: Cell;
     _gameBoard: Board;
 
     constructor(_boardSize: number, _gameBoard){
-        this._position = this.placeFood(_boardSize);
         this._gameBoard = _gameBoard;
+        this._position = this.newRandomPosition();
     }
 
-    placeFood(boardSize){
-        let start_x: number = Math.floor(Math.random()*boardSize);
-        let start_y: number = Math.floor(Math.random()*boardSize);
-        return new p5.Vector(start_x, start_y)
-    }
 
     moveFood(){
-        let newPosition: p5.Vector = this.newRandomPosition();
+        let newPosition: Cell = this.newRandomPosition();
         this._position = newPosition;
     }
 
-    newRandomPosition(): p5.Vector{
-        let destination_cell: p5.Vector = this._gameBoard.getRandomCell()
-        let destination_x = destination_cell.x;
-        let destination_y = destination_cell.y;
+    newRandomPosition(): Cell{
+        let destination_cell: Cell = this._gameBoard.getRandomCell()
     
-        return new p5.Vector(destination_x, destination_y)
+        return destination_cell;
     }
 
     get position(){

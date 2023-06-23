@@ -2,11 +2,12 @@
 import snake from "./snake"
 import food from "./food"
 import p5 from "p5";
+import Cell from "./cell"
 
 
 
 interface RowArray {
-    rowCells: p5.Vector[];
+    rowCells: Cell[];
 }
 
 interface BoardArray {
@@ -35,31 +36,60 @@ class Board{
         let pushRowArray: RowArray = {rowCells: []}
         let xPos:number = 0;
         let yPos:number = 0;
+        let cellIdCount: number = 0;
+
 
         for (let i = 0; i < cellCount; i++){ // for each row
             pushRowArray = {rowCells: []}; //the RowArray of each row
-            xPos = i * cellSize;
+            yPos = i * cellSize;
             for (let j = 0; j < cellCount; j++){
-                yPos = j * cellSize;  
-                pushRowArray.rowCells.push(new p5.Vector(xPos, yPos));
+                xPos = j * cellSize;
+                if (j === 0 || i === 0 || j === cellCount - 1 || i === cellCount - 1){
+                    pushRowArray.rowCells.push(new Cell(-1, xPos, yPos));
+                } else {
+                    pushRowArray.rowCells.push(new Cell(cellIdCount, xPos, yPos));
+                    cellIdCount++;
+                }
+                
             }
-            retGridArray.rowArrays.push(pushRowArray);
+                retGridArray.rowArrays.push(pushRowArray);
         }
         return retGridArray
     }
 
-    getRandomCell(): p5.Vector{
-        let rand_y: number = Math.floor(Math.random()*this._boardArray.rowArrays.length);
-        let rand_row = this._boardArray.rowArrays[rand_y];
-        let rand_x: number = Math.floor(Math.random()*rand_row.rowCells.length);
-        let rand_cell = rand_row.rowCells[rand_x];
+    getRandomCell(): Cell{
+        let rand_y_index: number = 1 + Math.floor(Math.random()*this._boardArray.rowArrays.length - 2);
+        let rand_row = this._boardArray.rowArrays[rand_y_index];
+        let rand_x_index: number = 1 + Math.floor(Math.random()*rand_row.rowCells.length - 2);
+        let rand_cell = rand_row.rowCells[rand_x_index];
         return rand_cell;
     }
 
-    getSpecificCell(cellCoordinate: CellCoordinate): p5.Vector{
+    getSpecificCell(cellCoordinate: CellCoordinate): Cell{
         let specific_row = this._boardArray.rowArrays[cellCoordinate.y];
         let specific_cell = specific_row.rowCells[cellCoordinate.x];
         return specific_cell;
+    }
+
+    getCellById(idToFind){
+        this._boardArray
+    }
+
+    getArrayOfCells(): Cell[]{
+        console.log("check1")
+        let cells: Cell[] = [];
+        //this._boardArray.rowArrays.forEach(row => row.forEach(cellInRow => cells.push(cellInRow)))
+        
+        for (let i: number = 1; i < (this._cellCount - 1); i++){
+            let currentRow: RowArray = this._boardArray.rowArrays[i];
+            for (let j: number = 1; i < (this._cellCount - 1); j++){
+                let currentCell: Cell = currentRow.rowCells[j]
+                cells.push(currentCell)
+            }
+        }
+        console.log(this._cellCount)
+        //console.log(cells);
+        return cells;
     }
 }
 
