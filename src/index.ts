@@ -60,7 +60,7 @@ function createSketch(p: p5): void {
 
 
 
-        p.background("green")
+        p.background("skyblue")
 
         drawGameInfo();
         //playerSnake.move
@@ -123,7 +123,7 @@ function createSketch(p: p5): void {
 
     function drawBoard(){
         let borderCells = gameBoard.boarderCells();
-        p.fill("red");
+        p.fill("tomato");
         borderCells.forEach(borderCell => p.square(borderCell.x, borderCell.y, boardCellSize))
     }
 
