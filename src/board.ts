@@ -12,19 +12,19 @@ interface CellCoordinate {
     y: number;
 }
 
-
+/**
+ * The game board object, contains a property that is an array of Cells, along with properties for the draw size of each cell and the count of cells on an axis
+ */
 class Board{
     _cellCount: number; //number of cells on each axis of the board
     _cellSize: number; //the visual size of each cell in pixels
     _boardArray: BoardArray; // the object that contains the arrays that contains the board cells
 
-    constructor(_cellCount, _cellSize){
+    constructor(_cellCount: number, _cellSize: number){
         this._cellCount = _cellCount; 
         this._cellSize = _cellSize;
         this._boardArray = new BoardArray(this._cellCount, this._cellSize);
     }
-
-
 
     getRandomCell(): Cell{
         return this._boardArray.getRandomCell();
@@ -35,30 +35,14 @@ class Board{
         return specific_cell;
     }
 
-    getCellById(idToFind){
+    /*getCellById(idToFind){
         this._boardArray
-    }
+    }*/
 
     boarderCells(){
         return this._boardArray.borderCells;
     }
 
-/*
-    getArrayOfCells(): Cell[]{
-        //console.log("check1")
-        let cells: Cell[] = [];
-        
-        for (let i: number = 1; i < (this._cellCount - 1); i++){
-            let currentRow: Cell[] = this._boardArray.rowArrays[i];
-            for (let j: number = 1; i < (this._cellCount - 1); j++){
-                let currentCell: Cell = currentRow.rowCells[j];
-                cells.push(currentCell);
-            }
-        }
-        //console.log(this._cellCount)
-        //console.log(cells);
-        return cells;
-    }*/
 }
 
 

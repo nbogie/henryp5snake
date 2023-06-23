@@ -3,7 +3,11 @@ interface CellCoordinate {
     y: number;
 }
 
-
+/**
+ * One of the squares on the grid of the board
+ * has its own unique id, unless it is a border cell in which case its id is -1
+ * has a CellCoordinate which is an x, y coordinate pair for where it is on the grid of non-border cells
+ */
 class Cell {
     _id: number;
     _x: number;
