@@ -14,7 +14,7 @@ function createSketch(p: p5): void {
 
     // ------------------------------ GAME PARAMETERS ------------------------------ \\
     //change these to change the base settings of the game;
-    let fps = 4; //initial game speed
+    let fps = 2; //initial game speed
     let difficult_increment:number = 1; //how much hard the game gets each time the snake eats food
     let number_of_cells_on_board:number = 20; //the number of squares on each axis of the board
 
@@ -37,7 +37,6 @@ function createSketch(p: p5): void {
         myCanvas.mousePressed(handleMousePressed);
         p.frameRate(fps);
         p.noStroke();
-        drawBoard();
 
     }
 
@@ -47,14 +46,16 @@ function createSketch(p: p5): void {
     }
 
     function gameStep(): void{
+        keyPressed();
         if (playerSnake.head.position.id === -1){
+            console.log("lost")
             gameOver();
         }
         p.clear();
         p.background("blue")
-        keyPressed();
         //playerSnake.move
         drawFood(gameFood);
+        drawBoard();
         playerSnake.moveHead();
         playerSnake.body.forEach(segment => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
         checkIfEating();
@@ -82,7 +83,7 @@ function createSketch(p: p5): void {
     }
 
     function checkIfEating(){
-        if (playerSnake.head.position === gameFood.position){
+        if (playerSnake.head.position.id === gameFood.position.id){
             eatTheFood();
             fps++;
             p.frameRate(fps);
@@ -106,18 +107,19 @@ function createSketch(p: p5): void {
         }
     }
 
-    function drawBoard(): void{
-        //gameBoard.getArrayOfCells();
+    function drawBoard(){
+        let borderCells = gameBoard.boarderCells();
+        p.fill("red");
+        borderCells.forEach(borderCell => p.square(borderCell.x, borderCell.y, boardCellSize))
     }
-
     function gameOver(){
-        //p.clear();
-        /*
-        p.background("black");
+        p.clear();
+        
+        //p.background("black");
         p.fill("white");
         p.text("YOU LOSE!", 200, 200);
-        */
-        //p.noLoop();
+        
+        p.noLoop();
     }
 
     // p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);

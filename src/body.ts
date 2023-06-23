@@ -13,6 +13,7 @@ class Body{
     _pre_tail: Tail | Head;
     _positionCoordinate: CellCoordinate;
     _gameBoard: Board;
+    _previousPosition: Cell;
 
     constructor(_positionCoordinate: CellCoordinate, _gameBoard: Board){
         //console.log(_positionCoordinate, _gameBoard);
@@ -22,7 +23,11 @@ class Body{
         this._position = _gameBoard.getSpecificCell(_positionCoordinate);
     }
 
-
+    updatePosition(new_position){
+        this.previousPosition = this.position;
+        this.position = new_position;
+        return this.previousPosition;
+    }
 
     get position(){
         return this._position;
@@ -36,6 +41,10 @@ class Body{
         this._position = new_position;
     }
 
+    set previousPosition(current_position: Cell){
+        this._previousPosition = current_position;
+    }
+
     set positionCoordinate(new_coordinate: CellCoordinate){
         this._positionCoordinate = new_coordinate;
     }
@@ -47,6 +56,7 @@ class Head extends Body{
     constructor(_startCoordinate, _gameBoard: Board){
         super(_startCoordinate, _gameBoard);
     }
+
 
 }
 

@@ -13,13 +13,13 @@ class Food{
 
 
     moveFood(){
-        let newPosition: Cell = this.newRandomPosition();
+        //let newPosition: Cell = this.newRandomPosition();
+        let newPosition: Cell = this._gameBoard.getRandomCell();
         this._position = newPosition;
     }
 
     newRandomPosition(): Cell{
         let destination_cell: Cell = this._gameBoard.getRandomCell()
-    
         return destination_cell;
     }
 
