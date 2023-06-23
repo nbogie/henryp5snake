@@ -5,7 +5,10 @@ import p5 from "p5";
 import Cell from "./cell"
 import Board from "./board";
 
-
+interface CellCoordinate {
+    x: number;
+    y: number;
+}
 
 class BoardArray {
     _array: Cell[][]
@@ -15,7 +18,6 @@ class BoardArray {
     constructor(_cellCount, _cellSize){
         this.createCellArrays(_cellCount, _cellSize);
         this.populate_gameCells();
-        console.log(this.getRandomCell())
 
 
     }
@@ -47,10 +49,11 @@ class BoardArray {
 
                 // if current row is the first or last row, or if the current cell is the first or last cell in a row
                 if (j === 0 || i === 0 || j === cellCount - 1 || i === cellCount - 1){ 
-                    pushRowArray.push(new Cell(-1, xPos, yPos)); // add a boundary cell to the current row array
+                    pushRowArray.push(new Cell(-1, xPos, yPos, {x: j, y: i})); // add a boundary cell to the current row array
                 } else {
-                    pushRowArray.push(new Cell(cellIdCount, xPos, yPos)); // otherwise add a normal cell
-                    gamePushRowArray.push(new Cell(cellIdCount, xPos, yPos)); // otherwise add a normal cell
+                    let pushCell = new Cell(cellIdCount, xPos, yPos, {x: j, y: i});
+                    pushRowArray.push(pushCell); // otherwise add a normal cell
+                    gamePushRowArray.push(pushCell); // otherwise add a normal cell
                     cellIdCount++; // incremement the id counter of the valid cells
                 }
             }
