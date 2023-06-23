@@ -1,5 +1,6 @@
 import p5 from "p5";
 import Board from "./board"
+import Cell from "./cell"
 
 interface CellCoordinate {
     x: number;
@@ -8,16 +9,25 @@ interface CellCoordinate {
 
 class Body{
     _id: number;
-    _position: p5.Vector;
+    _position: Cell;
     _pre_tail: Tail | Head;
     _positionCoordinate: CellCoordinate;
+    _gameBoard: Board;
+    _previousPosition: Cell;
 
-    constructor(_positionCoordinate, _gameBoard){
+    constructor(_positionCoordinate: CellCoordinate, _gameBoard: Board){
+        //console.log(_positionCoordinate, _gameBoard);
+        this._gameBoard = _gameBoard;
         this._positionCoordinate = _positionCoordinate;
+        //console.log(_gameBoard, _positionCoordinate);
         this._position = _gameBoard.getSpecificCell(_positionCoordinate);
     }
 
-
+    updatePosition(new_position){
+        this.previousPosition = this.position;
+        this.position = new_position;
+        return this.previousPosition;
+    }
 
     get position(){
         return this._position;
@@ -27,8 +37,12 @@ class Body{
         return this._positionCoordinate;
     }
 
-    set position(new_position: p5.Vector){
+    set position(new_position: Cell){
         this._position = new_position;
+    }
+
+    set previousPosition(current_position: Cell){
+        this._previousPosition = current_position;
     }
 
     set positionCoordinate(new_coordinate: CellCoordinate){
@@ -39,9 +53,10 @@ class Body{
 
 
 class Head extends Body{
-    constructor(_gameBoard){
-        super({x: 0, y: 0}, _gameBoard);
+    constructor(_startCoordinate, _gameBoard: Board){
+        super(_startCoordinate, _gameBoard);
     }
+
 
 }
 

@@ -2,6 +2,7 @@
 import Board from "./board"
 import {Head, Body, Tail} from "./body"
 import p5 from "p5";
+import Cell from "./cell"
 
 
 interface CellCoordinate {
@@ -20,7 +21,7 @@ class Snake{
     constructor(_gameBoard: Board){
         this._length = 1;
         this._gameBoard = _gameBoard;
-        this._head = new Head(this._gameBoard)
+        this._head = new Head({x: 1, y: 1}, this._gameBoard)
         this._body = [this._head];
         this._bodyIndex = 1;
         this._direction = 2;
@@ -45,21 +46,20 @@ class Snake{
 
         switch (this._direction) {
             case 0: //up arrow
-                destinationCellCoordinate = {x: current_x - 1, y: current_y};
-            break;
-            case 1: //right arrow
-                destinationCellCoordinate = {x: current_x , y: current_y + 1};
-            break;
-            case 2: //down arrow
-                destinationCellCoordinate = {x: current_x + 1, y: current_y };
-            break;
-            case 3: //left arrow
                 destinationCellCoordinate = {x: current_x, y: current_y - 1};
             break;
+            case 1: //right arrow
+                destinationCellCoordinate = {x: current_x + 1, y: current_y};
+            break;
+            case 2: //down arrow
+                destinationCellCoordinate = {x: current_x, y: current_y + 1};
+            break;
+            case 3: //left arrow
+                destinationCellCoordinate = {x: current_x - 1, y: current_y};
+            break;
         }
-
-        let destinationCell: p5.Vector = this._gameBoard.getSpecificCell(destinationCellCoordinate);
-        let currentHeadCell: p5.Vector = this._gameBoard.getSpecificCell(this._head.positionCoordinate);
+        let destinationCell: Cell = this._gameBoard.getSpecificCell(destinationCellCoordinate);
+        let currentHeadCell: Cell = this._gameBoard.getSpecificCell(this._head.positionCoordinate);
         this._head.positionCoordinate = destinationCellCoordinate;
         this._head.position = destinationCell;
     }

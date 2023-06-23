@@ -8,17 +8,23 @@ import {Head, Body, Tail} from "./body"
 const myP5 = new p5(createSketch);
 
 
+
 function createSketch(p: p5): void {
 
+
+    // ------------------------------ GAME PARAMETERS ------------------------------ \\
+    //change these to change the base settings of the game;
+    let fps = 2; //initial game speed
+    let difficult_increment:number = 1; //how much hard the game gets each time the snake eats food
+    let number_of_cells_on_board:number = 20; //the number of squares on each axis of the board
 
     //Crucially, assign the setup and draw functions for the p5 createSketch.
     p.setup = setup;
     p.draw = draw;
     
-    let fps = 3;
     
     const boardSize: number = Math.min(p.windowHeight, p.windowWidth) - 100; //graphical size of the board
-    const boardCellCount: number = 40//number of cells on each board axis = 40
+    const boardCellCount: number = number_of_cells_on_board + 2//number of cells on each board axis = 40
     const boardCellSize: number = boardSize / boardCellCount;
 
     const gameBoard: Board = new Board(boardCellCount, boardCellSize)
@@ -40,17 +46,22 @@ function createSketch(p: p5): void {
     }
 
     function gameStep(): void{
+        keyPressed();
+        if (playerSnake.head.position.id === -1){
+            console.log("lost")
+            gameOver();
+        }
         p.clear();
         p.background("blue")
-        keyPressed();
         //playerSnake.move
         drawFood(gameFood);
+        drawBoard();
         playerSnake.moveHead();
         playerSnake.body.forEach(segment => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
         checkIfEating();
     }
 
-    function drawBodyPart(bodyPart: Head | Tail | Body): void {
+    function drawBodyPart(bodyPart: Head | Tail | Body): void {        
         let x: number = bodyPart.position.x;
         let y: number = bodyPart.position.y;
         let n: number = boardCellSize;
@@ -72,9 +83,11 @@ function createSketch(p: p5): void {
     }
 
     function checkIfEating(){
-        console.log(playerSnake.head.position, gameFood.position)
-        if (playerSnake.head.position === gameFood.position){
+        if (playerSnake.head.position.id === gameFood.position.id){
             eatTheFood();
+            fps++;
+            p.frameRate(fps);
+            console.log("Food Eaten")
         }
     }
 
@@ -92,6 +105,21 @@ function createSketch(p: p5): void {
         } else if (p.keyCode === p.LEFT_ARROW) {
             playerSnake.direction = 3;
         }
+    }
+
+    function drawBoard(){
+        let borderCells = gameBoard.boarderCells();
+        p.fill("red");
+        borderCells.forEach(borderCell => p.square(borderCell.x, borderCell.y, boardCellSize))
+    }
+    function gameOver(){
+        p.clear();
+        
+        //p.background("black");
+        p.fill("white");
+        p.text("YOU LOSE!", 200, 200);
+        
+        p.noLoop();
     }
 
     // p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
