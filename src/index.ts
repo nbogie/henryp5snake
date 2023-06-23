@@ -17,10 +17,11 @@ function createSketch(p: p5): void {
     let fps = 2; //initial game speed
     let difficult_increment:number = 1; //how much hard the game gets each time the snake eats food
     let number_of_cells_on_board:number = 20; //the number of squares on each axis of the board
-
     //Crucially, assign the setup and draw functions for the p5 createSketch.
     p.setup = setup;
     p.draw = draw;
+
+    
     
     
     const boardSize: number = Math.min(p.windowHeight, p.windowWidth) - 100; //graphical size of the board
@@ -31,8 +32,12 @@ function createSketch(p: p5): void {
     const playerSnake: snake = new snake(gameBoard);
     const gameFood: Food = new Food(boardSize, gameBoard);
 
+
+    
+    let score = 0;
+
     function setup():void {
-        const myCanvas = p.createCanvas(boardSize, boardSize);
+        const myCanvas = p.createCanvas(p.windowHeight, p.windowWidth);
 
         myCanvas.mousePressed(handleMousePressed);
         p.frameRate(fps);
@@ -52,16 +57,24 @@ function createSketch(p: p5): void {
             gameOver();
         }
         p.clear();
-        p.background("blue")
+
+
+
+        p.background("green")
+
+        drawGameInfo();
         //playerSnake.move
         drawFood(gameFood);
         drawBoard();
-        playerSnake.moveHead();
+        playerSnake.updatePositions();
         playerSnake.body.forEach(segment => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
         checkIfEating();
+        checkIfLost();
     }
 
-    function drawBodyPart(bodyPart: Head | Tail | Body): void {        
+
+
+    function drawBodyPart(bodyPart: Head | Tail | Body): void {
         let x: number = bodyPart.position.x;
         let y: number = bodyPart.position.y;
         let n: number = boardCellSize;
@@ -87,7 +100,8 @@ function createSketch(p: p5): void {
             eatTheFood();
             fps++;
             p.frameRate(fps);
-            console.log("Food Eaten")
+            playerSnake.eat();
+            score++;
         }
     }
 
@@ -112,6 +126,16 @@ function createSketch(p: p5): void {
         p.fill("red");
         borderCells.forEach(borderCell => p.square(borderCell.x, borderCell.y, boardCellSize))
     }
+
+    function checkIfLost(){
+        let autoCannibalismCheck = playerSnake.checkAutoCannibalism();
+        let concussionCheck = playerSnake.checkIfInAWall();
+
+        if (autoCannibalismCheck || concussionCheck){
+            gameOver();
+        }
+    }
+
     function gameOver(){
         p.clear();
         
@@ -121,6 +145,14 @@ function createSketch(p: p5): void {
         
         p.noLoop();
     }
+
+    function drawGameInfo(){
+        p.rect(boardSize, 0, (p.windowWidth - boardSize), boardSize)
+        p.fill("black");
+        p.text(`Score: ${score}`, (boardSize + 10), 20);
+        p.text(`Difficulty: ${fps}`, (boardSize + 10), 40);
+    }
+
 
     // p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
