@@ -11,8 +11,6 @@ interface CellCoordinate {
  */
 class Body {
     _position: Cell;
-    /** This is the segment head-wards of this segment*/
-    _pre_tail: Tail | Head;
     _positionCoordinate: CellCoordinate;
     _gameBoard: Board;
     _previousPosition: Cell;

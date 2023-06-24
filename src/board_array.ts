@@ -7,16 +7,23 @@ interface CellCoordinate {
 
 /**
  * An object that contains structural variations of the same array of objects
- * contains methods for retrieving the references to the different kinds of cells on the board in different structures
+ * contains methods for retrieving the references to the different kinds of cells
+ * on the board in different structures
  */
 class BoardArray {
     _array: Cell[][];
+    /** non-border cells?  playable cells? */
     _gameCellsArray: Cell[][];
     _gameCells: Cell[];
     _borderCells: Cell[];
+
     constructor(_cellCount: number, _cellSize: number) {
-        this.createCellArrays(_cellCount, _cellSize);
-        this.populate_gameCells();
+        const result = this.createCellArrays(_cellCount, _cellSize);
+        this._array = result.array;
+        this._gameCellsArray = result.gameCellsArray;
+        const { borderCells, gameCells } = this.generateGameAndBorderCells();
+        this._borderCells = borderCells;
+        this._gameCells = gameCells;
     }
 
     /**
@@ -24,18 +31,17 @@ class BoardArray {
      * @returns a random cell from the board array that is not a border cell
      */
     getRandomCell(): Cell {
-        let randomCellIndex: number = Math.floor(
-            Math.random() * this._gameCells.length
-        );
-        return this._gameCells[randomCellIndex];
+        return pick(this._gameCells);
     }
-
     /**
      * creates the cells that will
      * @param cellCount The number of cells on each axis of the board including border cells
      * @param cellSize The draw size of each Cell on the board
      */
-    createCellArrays(cellCount: number, cellSize: number): void {
+    createCellArrays(
+        cellCount: number,
+        cellSize: number
+    ): { array: Cell[][]; gameCellsArray: Cell[][] } {
         // create an array that contains an array for each row in the table, each row is an array of cells
 
         let retGridArray: Cell[][] = []; //initialise as an empty array
@@ -76,14 +82,18 @@ class BoardArray {
             retGridArray.push(pushRowArray); // push the whole row that is an array of Cells to the return array
             retGameCellsArray.push(gamePushRowArray); // push the whole row that is an array of Cells to the return array
         }
-        this._array = retGridArray; //populate the cell array with all the new Cell objects
-        this._gameCellsArray = retGameCellsArray; // populate the game cells property with the new Cell objects excluding border Cells
+        return {
+            array: retGridArray,
+            gameCellsArray: retGameCellsArray,
+        };
+        //populate the cell array with all the new Cell objects
+        // populate the game cells property with the new Cell objects excluding border Cells
     }
 
     /**
      * populates the 1d array properties with their respective types of cells.
      */
-    populate_gameCells(): void {
+    generateGameAndBorderCells() {
         let retGameArray: Cell[] = [];
         let retBorderArray: Cell[] = [];
 
@@ -96,8 +106,11 @@ class BoardArray {
                 }
             }
         }
-        this._gameCells = retGameArray;
-        this._borderCells = retBorderArray;
+
+        return {
+            gameCells: retGameArray,
+            borderCells: retBorderArray,
+        };
     }
 
     get array() {
@@ -115,3 +128,7 @@ class BoardArray {
 }
 
 export default BoardArray;
+
+function pick<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
