@@ -134,7 +134,7 @@ function createSketch(p: p5): void {
      * Draw the border cells of the board in red
      */
     function drawBoard(): void {
-        let borderCells = gameBoard.boarderCells();
+        let borderCells = gameBoard.borderCells();
         p.fill(palette.colour5);
         p.stroke("black");
         borderCells.forEach((borderCell) =>

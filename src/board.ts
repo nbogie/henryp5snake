@@ -37,7 +37,7 @@ class Board {
         this._boardArray
     }*/
 
-    boarderCells() {
+    borderCells() {
         return this._boardArray.borderCells;
     }
 }
