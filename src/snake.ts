@@ -62,23 +62,18 @@ class Snake {
             x: current_x,
             y: current_y,
         };
+        const movementOffsetLookup = {
+            up: { x: 0, y: -1 },
+            right: { x: 1, y: 0 },
+            down: { x: 0, y: 1 },
+            left: { x: -1, y: 0 },
+        };
+        const offset = movementOffsetLookup[this._direction];
 
-        switch (this._direction) {
-            case "up":
-                destinationCellCoordinate = { x: current_x, y: current_y - 1 };
-                break;
-            case "right":
-                destinationCellCoordinate = { x: current_x + 1, y: current_y };
-                break;
-            case "down":
-                destinationCellCoordinate = { x: current_x, y: current_y + 1 };
-                break;
-            case "left":
-                destinationCellCoordinate = { x: current_x - 1, y: current_y };
-                break;
-            default:
-                throw new Error("Unexpected direction: " + this._direction);
-        }
+        destinationCellCoordinate = {
+            x: current_x + offset.x,
+            y: current_y + offset.y,
+        };
 
         let destinationCell: Cell = this._gameBoard.getSpecificCell(
             destinationCellCoordinate
@@ -92,6 +87,7 @@ class Snake {
      */
     updatePositions(): void {
         this.moveHead();
+
         let previousBodyPart = this.head;
         for (let i = 1; i < this._body.length; i++) {
             this._body[i].updatePosition(previousBodyPart.previousPosition);

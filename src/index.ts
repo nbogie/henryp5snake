@@ -1,11 +1,10 @@
 import p5 from "p5";
-//@ts-ignore
-import colour_palettes from "nice-color-palettes";
-import Board from "./board";
-import snake from "./snake";
-import Food from "./food";
-import { Head, Body, Tail } from "./body";
 import Loser from "./Loser";
+import Board from "./board";
+import { Body, Head, Tail } from "./body";
+import Food from "./food";
+import { setupColourPalettes } from "./setupColourPalettes";
+import snake from "./snake";
 
 const myP5 = new p5(createSketch);
 
@@ -19,12 +18,7 @@ function createSketch(p: p5): void {
     p.setup = setup;
     p.draw = draw;
 
-    let game_palette = p.random(colour_palettes) as any as string[]; // get a random colour palette
-    const colour1: string = game_palette[0];
-    const colour2: string = game_palette[1];
-    const colour3: string = game_palette[2];
-    const colour4: string = game_palette[3];
-    const colour5: string = game_palette[4];
+    const palette = setupColourPalettes(p);
 
     const boardSize: number = Math.min(p.windowHeight, p.windowWidth) - 100; //graphical size of the board
     const boardCellCount: number = number_of_cells_on_board + 2; //number of cells on each board axis = 40
@@ -57,16 +51,18 @@ function createSketch(p: p5): void {
 
     function drawAll() {
         clearCanvas(p);
-        p.background(colour1);
+        p.background(palette.colour1);
         drawGameInfo();
         drawBoard();
         drawFood(gameFood);
         drawHeadPart(playerSnake.head);
+        // change to retrieve the positions of all the bodies of the snake then
+        // draw from those positions
+        playerSnake.tail.forEach((segment) => drawBodyPart(segment));
     }
 
     function updateAll() {
         playerSnake.updatePositions();
-        playerSnake.tail.forEach((segment) => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
         handlePossibleEating();
         handlePossibleGameOver();
     }
@@ -76,7 +72,7 @@ function createSketch(p: p5): void {
      * @param headPart the head of the snake to be drawn
      */
     function drawHeadPart(headPart: Head | Tail | Body): void {
-        drawBlock(headPart, colour2);
+        drawBlock(headPart, palette.colour2);
     }
 
     /**
@@ -84,7 +80,7 @@ function createSketch(p: p5): void {
      * @param bodyPart the part of the snakes tail to be drawn
      */
     function drawBodyPart(bodyPart: Head | Tail | Body): void {
-        drawBlock(bodyPart, colour3);
+        drawBlock(bodyPart, palette.colour3);
     }
 
     /**
@@ -92,12 +88,11 @@ function createSketch(p: p5): void {
      * @param food_piece a Food object of the game
      */
     function drawFood(food_piece: Food): void {
-        drawBlock(food_piece, colour4);
+        drawBlock(food_piece, palette.colour4);
     }
 
     function drawBlock(block: Head | Tail | Food, colour: string): void {
-        let x: number = block.position.x;
-        let y: number = block.position.y;
+        const { x, y } = block.position;
         p.fill(colour);
         p.square(x, y, boardCellSize);
     }
@@ -140,7 +135,7 @@ function createSketch(p: p5): void {
      */
     function drawBoard(): void {
         let borderCells = gameBoard.boarderCells();
-        p.fill(colour5);
+        p.fill(palette.colour5);
         p.stroke("black");
         borderCells.forEach((borderCell) =>
             p.square(borderCell.x, borderCell.y, boardCellSize)
