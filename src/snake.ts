@@ -2,6 +2,7 @@ import Board from "./board";
 import { Head, Body, Tail } from "./body";
 import p5 from "p5";
 import Cell from "./cell";
+import { Direction } from "./direction";
 
 /**
  * Defines an x and y coordinate within the gameboard grid, not to be confused with x and y coordinates of the canvas, these coordinates are integers between 0 and the board size
@@ -19,7 +20,7 @@ class Snake {
     _head: Head;
     _tail: Tail[];
     _bodyIndex: number;
-    _direction: number;
+    _direction: Direction;
     _gameBoard: Board;
 
     /**
@@ -32,7 +33,7 @@ class Snake {
         this._body = [this._head]; // an array that contains all the body objects of the snake
         this._tail = []; // and array that contains only the tail objects of the snake
         this._bodyIndex = 1;
-        this._direction = 2;
+        this._direction = "down";
     }
 
     /**
@@ -63,18 +64,20 @@ class Snake {
         };
 
         switch (this._direction) {
-            case 0: //up arrow
+            case "up":
                 destinationCellCoordinate = { x: current_x, y: current_y - 1 };
                 break;
-            case 1: //right arrow
+            case "right":
                 destinationCellCoordinate = { x: current_x + 1, y: current_y };
                 break;
-            case 2: //down arrow
+            case "down":
                 destinationCellCoordinate = { x: current_x, y: current_y + 1 };
                 break;
-            case 3: //left arrow
+            case "left":
                 destinationCellCoordinate = { x: current_x - 1, y: current_y };
                 break;
+            default:
+                throw new Error("Unexpected direction: " + this._direction);
         }
 
         let destinationCell: Cell = this._gameBoard.getSpecificCell(
@@ -130,8 +133,8 @@ class Snake {
         return this._head;
     }
     // ------------------------------------------- SETTER METHODS ------------------------------------------- \\
-    set direction(dir_num: 0 | 1 | 2 | 3) {
-        this._direction = dir_num;
+    set direction(givenDirection: Direction) {
+        this._direction = givenDirection;
     }
 }
 

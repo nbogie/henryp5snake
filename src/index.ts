@@ -125,13 +125,13 @@ function createSketch(p: p5): void {
      */
     function handleKeyPresses(): void {
         if (p.keyCode === p.UP_ARROW) {
-            playerSnake.direction = 0;
+            playerSnake.direction = "up";
         } else if (p.keyCode === p.RIGHT_ARROW) {
-            playerSnake.direction = 1;
+            playerSnake.direction = "right";
         } else if (p.keyCode === p.DOWN_ARROW) {
-            playerSnake.direction = 2;
+            playerSnake.direction = "down";
         } else if (p.keyCode === p.LEFT_ARROW) {
-            playerSnake.direction = 3;
+            playerSnake.direction = "left";
         }
     }
 
