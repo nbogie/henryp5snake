@@ -1,4 +1,3 @@
-import p5 from "p5";
 import Board from "./board";
 import Cell from "./cell";
 
@@ -10,10 +9,9 @@ interface CellCoordinate {
 /**
  * Base class for the body components of the snake
  */
-
 class Body {
-    _id: number;
     _position: Cell;
+    /** This is the segment head-wards of this segment*/
     _pre_tail: Tail | Head;
     _positionCoordinate: CellCoordinate;
     _gameBoard: Board;
@@ -32,7 +30,7 @@ class Body {
      *
      * @param new_position the position to which the body object should be moved to on the next iteration
      */
-    updatePosition(new_position) {
+    updatePosition(new_position: Cell) {
         this.previousPosition = this.position;
         this.position = new_position;
     }
@@ -84,4 +82,4 @@ class Tail extends Body {
     }
 }
 
-export { Head, Body, Tail };
+export { Body, Head, Tail };
