@@ -1,8 +1,4 @@
-import snake from "./snake";
-import food from "./food";
-import p5 from "p5";
 import Cell from "./cell";
-import Board from "./board";
 
 interface CellCoordinate {
     x: number;
@@ -18,7 +14,7 @@ class BoardArray {
     _gameCellsArray: Cell[][];
     _gameCells: Cell[];
     _borderCells: Cell[];
-    constructor(_cellCount, _cellSize) {
+    constructor(_cellCount: number, _cellSize: number) {
         this.createCellArrays(_cellCount, _cellSize);
         this.populate_gameCells();
     }
