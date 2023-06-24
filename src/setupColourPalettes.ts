@@ -2,7 +2,14 @@ import p5 from "p5";
 //@ts-ignore
 import colour_palettes from "nice-color-palettes";
 
-export function setupColourPalettes(p: p5) {
+export interface Palette {
+    colour1: string;
+    colour2: string;
+    colour3: string;
+    colour4: string;
+    colour5: string;
+}
+export function setupColourPalettes(p: p5): Palette {
     // get a random colour palette
     let game_palette = p.random(colour_palettes) as any as string[];
     const colour1: string = game_palette[0];
