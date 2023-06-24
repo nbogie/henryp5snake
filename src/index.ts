@@ -1,4 +1,5 @@
 import p5 from "p5";
+//@ts-ignore
 import colour_palettes from "nice-color-palettes";
 import Board from "./board";
 import snake from "./snake";
@@ -18,7 +19,7 @@ function createSketch(p: p5): void {
     p.setup = setup;
     p.draw = draw;
 
-    let game_palette = p.random(colour_palettes); // get a random colour palette
+    let game_palette = p.random(colour_palettes) as any as string[]; // get a random colour palette
     const colour1: string = game_palette[0];
     const colour2: string = game_palette[1];
     const colour3: string = game_palette[2];
@@ -50,7 +51,7 @@ function createSketch(p: p5): void {
 
     function gameStep(): void {
         keyPressed();
-        p.clear();
+        clearCanvas(p);
 
         p.background(colour1);
         drawGameInfo();
@@ -159,7 +160,7 @@ function createSketch(p: p5): void {
      * @returns What the player is
      */
     function gameOver(): Loser {
-        p.clear(); // destroy everything theyve accomplished
+        clearCanvas(p); // destroy everything theyve accomplished
         p.fill("white");
         p.text("YOU LOSE!", 200, 200); //let them know theyve lost
 
@@ -178,5 +179,9 @@ function createSketch(p: p5): void {
         p.text(`Difficulty: ${fps}`, boardSize + 10, 40); // draws the difficulty text
     }
 
+    function clearCanvas(p: p5) {
+        //@ts-ignore
+        p.clear();
+    }
     // p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 }
