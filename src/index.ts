@@ -50,15 +50,21 @@ function createSketch(p: p5): void {
     }
 
     function gameStep(): void {
-        keyPressed();
-        clearCanvas(p);
+        handleKeyPresses();
+        drawAll();
+        updateAll();
+    }
 
+    function drawAll() {
+        clearCanvas(p);
         p.background(colour1);
         drawGameInfo();
         drawBoard();
         drawFood(gameFood);
         drawHeadPart(playerSnake.head);
+    }
 
+    function updateAll() {
         playerSnake.updatePositions();
         playerSnake.tail.forEach((segment) => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
         handlePossibleEating();
@@ -117,7 +123,7 @@ function createSketch(p: p5): void {
     /**
      * sets the direction of the snake based on arrow key press - up: 0, right: 1, down: 2, left: 3
      */
-    function keyPressed(): void {
+    function handleKeyPresses(): void {
         if (p.keyCode === p.UP_ARROW) {
             playerSnake.direction = 0;
         } else if (p.keyCode === p.RIGHT_ARROW) {
