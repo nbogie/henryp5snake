@@ -4,13 +4,15 @@ import { Body, Head, Tail } from "./body";
 import Food from "./food";
 
 export function drawAll(p: p5, gs: GameState) {
-    clearCanvas(p);
     p.background(gs.palette.colour1);
+    p.noStroke();
+
     drawGameInfo();
     drawBoard();
     drawFood(gs.gameFood);
     drawHeadPart(gs.playerSnake.head);
-    // change to retrieve the positions of all the bodies of the snake then
+
+    // TODO: change to retrieve the positions of all the bodies of the snake then
     // draw from those positions
     gs.playerSnake.tail.forEach((segment) => drawBodyPart(segment));
 
@@ -65,9 +67,4 @@ export function drawAll(p: p5, gs: GameState) {
         );
         p.noStroke();
     }
-}
-
-function clearCanvas(p: p5) {
-    //@ts-ignore
-    p.clear();
 }
