@@ -6,6 +6,7 @@ import Cell from "./cell";
  * Food object, has two properties: position (a Cell), and the game board.
  * Contains methods for moving itself to a new random position
  */
+
 class Food {
     /** position of the food */
     _position: Cell;
