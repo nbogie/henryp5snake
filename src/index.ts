@@ -56,13 +56,13 @@ function createSketch(p: p5): void {
         p.background(colour1);
         drawGameInfo();
         drawBoard();
-
         drawFood(gameFood);
-        playerSnake.updatePositions();
         drawHeadPart(playerSnake.head);
+
+        playerSnake.updatePositions();
         playerSnake.tail.forEach((segment) => drawBodyPart(segment)); // change to retrieve the positions of all the bodies of the snake then draw from those positions
-        checkIfEating();
-        checkIfLost();
+        handlePossibleEating();
+        handlePossibleGameOver();
     }
 
     /**
@@ -104,7 +104,7 @@ function createSketch(p: p5): void {
     /**
      * Check to see if the head of the snake occupies the same square as the food object, if it does then carry out the code for when food is eaten
      */
-    function checkIfEating() {
+    function handlePossibleEating() {
         if (playerSnake.head.position.id === gameFood.position.id) {
             gameFood.moveFood(); //move the food to a new random location
             fps += difficulty_increment; // increase the game speed variable value
@@ -145,7 +145,7 @@ function createSketch(p: p5): void {
     /**
      * checks to see if the snake has eaten itself or slithered into a wall, if it has it will trigger gameOver();
      */
-    function checkIfLost(): void {
+    function handlePossibleGameOver(): void {
         let autoCannibalismCheck = playerSnake.checkAutoCannibalism(); //check to see if the snake has eaten itself
         let concussionCheck = playerSnake.checkIfInAWall(); //check to see if the snake has run into a wall
 
@@ -173,7 +173,7 @@ function createSketch(p: p5): void {
      */
     function drawGameInfo() {
         p.fill("white");
-        p.rect(boardSize, 0, p.windowWidth - boardSize, boardSize); // white square to the right of the game board
+        p.rect(boardSize, 0, p.width - boardSize, boardSize); // white square to the right of the game board
         p.fill("black");
         p.text(`Score: ${score}`, boardSize + 10, 20); // draws the score text
         p.text(`Difficulty: ${fps}`, boardSize + 10, 40); // draws the difficulty text
