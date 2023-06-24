@@ -1,8 +1,5 @@
-import snake from "./snake";
-import food from "./food";
-import p5 from "p5";
-import Cell from "./cell";
 import BoardArray from "./board_array";
+import Cell from "./cell";
 
 interface CellCoordinate {
     x: number;

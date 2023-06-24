@@ -1,6 +1,6 @@
 import { Palette } from "./setupColourPalettes";
 import Food from "./food";
-import snake from "./snake";
+import { Snake } from "./snake";
 import board from "./board";
 
 export interface GameState {
@@ -8,7 +8,7 @@ export interface GameState {
     boardSize: number;
     palette: Palette;
     gameFood: Food;
-    playerSnake: snake;
+    playerSnake: Snake;
     gameBoard: board;
     score: number;
     /** initial game speed */

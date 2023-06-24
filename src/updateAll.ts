@@ -1,10 +1,16 @@
 import p5 from "p5";
 import { GameState } from "./GameState";
 import Loser from "./Loser";
+import {
+    checkAutoCannibalism,
+    checkIfInAWall,
+    eat,
+    updatePositions,
+} from "./snake";
 
 export function updateAll(p: p5, gs: GameState): void {
     handleKeyPresses(gs, p);
-    gs.playerSnake.updatePositions();
+    updatePositions(gs.playerSnake);
     handlePossibleEating(gs, p);
     handlePossibleGameOver(gs, p);
 }
@@ -17,7 +23,7 @@ function handlePossibleEating(gs: GameState, p: p5) {
         gs.gameFood.moveFood(); //move the food to a new random location
         gs.fps += gs.difficulty_increment; // increase the game speed variable value
         p.frameRate(gs.fps); // set the actual game speed to the game speed variable's value
-        gs.playerSnake.eat(); // make the snake eat the food block
+        eat(gs.playerSnake); // make the snake eat the food block
         gs.score += gs.fps; //increment the players score by the difficulty
     }
 }
@@ -25,8 +31,8 @@ function handlePossibleEating(gs: GameState, p: p5) {
  * checks to see if the snake has eaten itself or slithered into a wall, if it has it will trigger gameOver();
  */
 function handlePossibleGameOver(gs: GameState, p: p5): void {
-    let autoCannibalismCheck = gs.playerSnake.checkAutoCannibalism(); //check to see if the snake has eaten itself
-    let concussionCheck = gs.playerSnake.checkIfInAWall(); //check to see if the snake has run into a wall
+    let autoCannibalismCheck = checkAutoCannibalism(gs.playerSnake); //check to see if the snake has eaten itself
+    let concussionCheck = checkIfInAWall(gs.playerSnake); //check to see if the snake has run into a wall
 
     if (autoCannibalismCheck || concussionCheck) {
         // if the snake has eaten itself or run into a wall, game over

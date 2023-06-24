@@ -3,7 +3,7 @@ import { GameState } from "./GameState";
 import Board from "./board";
 import Food from "./food";
 import { setupColourPalettes } from "./setupColourPalettes";
-import snake from "./snake";
+import { createSnake } from "./snake";
 
 export function initialiseGameState(p: p5): GameState {
     const number_of_cells_on_board = 20;
@@ -21,7 +21,7 @@ export function initialiseGameState(p: p5): GameState {
         gameBoard,
         gameFood: new Food(boardSize, gameBoard),
         palette: setupColourPalettes(p),
-        playerSnake: new snake(gameBoard),
+        playerSnake: createSnake(gameBoard),
         score: 0,
     };
     return gameState;
